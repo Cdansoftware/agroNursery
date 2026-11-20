@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<title>AgroNursery: पौधे और बीज पहचानें</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#fbf7ea;--panel:#fffefa;--ink:#1b2e20;--mute:#556657;--line:#e6dfc6;--deep:#14532d;--moss:#2f8f46;--leaf:#dcf0c4;--soil:#a8541c;--gold:#f5a623;--shadow:0 6px 20px #14532d1a;--red:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a13;--panel:#17261d;--ink:#eaf3e6;--mute:#a8bcaa;--line:#28402f;--deep:#0a2417;--moss:#5fc177;--leaf:#24442b;--soil:#e0a070;--shadow:0 6px 20px #0006;--red:#ff7a6b}}
+:root[data-theme="dark"]{--bg:#0f1a13;--panel:#17261d;--ink:#eaf3e6;--mute:#a8bcaa;--line:#28402f;--deep:#0a2417;--moss:#5fc177;--leaf:#24442b;--soil:#e0a070;--shadow:0 6px 20px #0006;--red:#ff7a6b}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.2;margin:0}
+a{color:inherit}
+header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 5vw;background:#14532dee;backdrop-filter:blur(8px);color:#eef5e9}
+header b{font:600 21px Fraunces,serif}
+header nav{display:flex;gap:4px;align-items:center;overflow-x:auto}
+header nav a{padding:6px 10px;border-radius:99px;text-decoration:none;color:#cfe0c8;font-size:14px;white-space:nowrap}header nav a:hover{background:#ffffff22}
+#lg{width:auto;margin:0;padding:6px 8px}#lg option{color:#000}.ib{font:inherit;cursor:pointer;border:0;background:#ffffff22;color:#fff;border-radius:99px;padding:6px 12px}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 85% 20%,#2f8f46 0,transparent 45%),linear-gradient(135deg,#0a2417,#14532d);color:#eef5e9;padding:56px 5vw 64px;border-bottom:6px solid var(--gold)}
+.hero h1{font-size:clamp(30px,5vw,52px);max-width:15em}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero p{max-width:34em;color:#c8dbc0;margin:14px 0 22px}
+.hero .lf{position:absolute;right:4vw;bottom:-10px;font-size:min(34vw,220px);opacity:.14;transform:rotate(-12deg);pointer-events:none}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.stats div{background:#ffffff14;border:1px solid #ffffff22;border-radius:12px;padding:10px 18px}
+.stats b{display:block;font:600 26px Fraunces,serif;color:var(--gold)}.stats span{font-size:13px;color:#c8dbc0}
+.btn{display:inline-block;font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:8px;padding:11px 20px;background:var(--gold);color:#3a2400;text-decoration:none;transition:.15s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.btn.sec{background:var(--moss);color:#fff}.btn.sm{padding:6px 12px;font-size:14px}.btn.out{background:transparent;border:1px solid var(--line);color:var(--ink)}
+section{padding:44px 5vw;max-width:1100px;margin:0 auto}
+section>p.lead{color:var(--mute);max-width:40em;margin:6px 0 22px}
+.tabs{display:flex;gap:8px;margin:18px 0;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:600;cursor:pointer;padding:9px 18px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.tabs button.on{background:var(--moss);color:#fff;border-color:var(--moss)}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+label{display:block;font-size:14px;color:var(--mute)}
+select,input,textarea{width:100%;margin-top:3px;font:inherit;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:18px}
+.card{position:relative;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--moss);border-radius:12px;padding:16px;transition:.2s}
+.res .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card h3{font-size:19px}.card small{color:var(--mute)}.card p{margin:8px 0 0;font-size:15px}
+.tag{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;background:var(--leaf);color:var(--ink);margin:8px 4px 0 0}
+.tag.lo{background:#f5a62333;color:var(--soil)}.tag.out{background:#c0392b22;color:var(--red)}
+.heart{position:absolute;top:10px;right:10px;border:0;background:var(--panel);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
+.note{background:var(--leaf);color:var(--ink);border-radius:8px;padding:10px 14px;margin-top:16px;font-size:14px}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.img{background:linear-gradient(180deg,var(--leaf),transparent);border-radius:8px;margin-bottom:10px;display:flex;justify-content:center;padding:6px}.img svg{width:100%;max-width:150px;height:auto}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.alt{background:linear-gradient(var(--leaf),var(--bg));max-width:none}.alt>*{max-width:1100px;margin-left:auto;margin-right:auto}
+.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px}
+.cal button{font:inherit;cursor:pointer;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.cal button.on{background:var(--moss);color:#fff;border-color:var(--moss)}.cal button.now{box-shadow:0 0 0 2px var(--gold)}
+.doc{display:grid;gap:10px;margin-top:16px}
+.doc details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.doc summary{cursor:pointer;font-weight:600}.doc p{margin:8px 0 0;color:var(--mute)}.doc b{color:var(--ink)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.out{background:var(--panel)}
+.bigout{background:var(--deep);color:#eef5e9;border-radius:12px;padding:18px;margin-top:12px}.bigout b{color:var(--gold)}
+.modal{position:fixed;inset:0;background:#000a;z-index:50;display:none;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}
+.box{background:var(--panel);border-radius:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto;padding:20px;position:relative}
+.box table{width:100%;border-collapse:collapse;margin-top:10px}.box td{padding:6px 4px;border-bottom:1px solid var(--line);font-size:15px}.box td:first-child{color:var(--mute);width:38%}
+.x{position:absolute;top:10px;right:12px;border:0;background:none;font-size:24px;cursor:pointer;color:var(--ink)}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;border-radius:99px;box-shadow:var(--shadow)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+footer{padding:28px 5vw;background:var(--deep);color:#c8dbc0;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><b>🌿 AgroNursery</b><nav><a href="#pehchan">पहचान</a><a href="#paudhe">पौधे</a><a href="#calendar">बुवाई कैलेंडर</a><a href="#doctor">पौधा डॉक्टर</a><a href="#tools">कैलकुलेटर</a><a href="#sampark">संपर्क</a><select class="ib" id="lg" data-keep onchange="setLang(this.value)" aria-label="भाषा / Language"><option value="hi">हिंदी</option><option value="en">English</option><option value="pa">ਪੰਜਾਬੀ</option></select><button class="ib" onclick="theme()" aria-label="थीम बदलें">🌓</button></nav></header>
+
+<div class="hero">
+<span class="lf">🌿</span>
+<h1>पौधा या बीज पहचानिए, <em>सही देखभाल</em> कीजिए</h1>
+<p>पत्ता, फूल, धूप या बीज का रंग चुनिए। पहचान, बुवाई का समय, पानी का शेड्यूल और रोग का इलाज, सब एक जगह।</p>
+<a class="btn" href="#pehchan">पहचान शुरू करें</a> <a class="btn sec" href="#doctor">पौधा बीमार है?</a>
+<div class="stats"><div><b id="n1">0</b><span>पौधों की किस्में</span></div><div><b id="n2">0</b><span>बीज की किस्में</span></div><div><b id="n3">0</b><span>स्टॉक में पौधे</span></div></div>
+</div>
+
+<section id="pehchan">
+<h2>पौधा या बीज पहचानें</h2>
+<p class="lead">जो आप देख रहे हैं, उसके हिसाब से विकल्प चुनिए। जितने कम विकल्प चुनेंगे, उतने ज़्यादा नतीजे दिखेंगे।</p>
+<div class="tabs"><button id="tP" class="on" onclick="mode('P')">🪴 पौधा</button><button id="tS" onclick="mode('S')">🌱 बीज</button></div>
+<div class="filters" id="f"></div>
+<div class="res" id="r"></div>
+<div class="note">यह अंदाज़ा है, पक्का नतीजा नहीं। बीज की पक्की पहचान पैकेट पर लिखे नाम, ब्रांड और बैच नंबर से होती है। पक्का करने के लिए पौधा या बीज दुकान पर लाइए।</div>
+</section>
+
+<section id="paudhe">
+<h2>हमारे पौधे / Our plants</h2>
+<p class="lead">घर के अंदर और बाहर, दोनों के लिए। ❤️ दबाकर पसंद सेव कीजिए, और "विवरण" में पूरी देखभाल गाइड देखिए।</p>
+<div class="filters"><label>नाम खोजें / Search<input id="sq" oninput="dir()" placeholder="जैसे: गुलाब या Rose"></label>
+<label>जगह / Place<select id="sp" onchange="dir()"><option value="">सभी / All</option><option value="अंदर">अंदर</option><option value="बाहर">बाहर</option></select></label>
+<label>प्रकार / Type<select id="st" onchange="dir()"><option value="">सभी</option><option value="fl">फूल वाले</option><option value="fr">फल</option><option value="hb">औषधीय / जड़ी-बूटी</option><option value="lo">कम देखभाल</option><option value="fav">❤️ मेरी पसंद</option></select></label></div>
+<p id="cnt" class="lead" style="margin:10px 0 0"></p>
+<div class="res" id="all"></div>
+</section>
+
+<section class="alt" id="calendar">
+<h2>📅 बुवाई कैलेंडर (उत्तर भारत)</h2>
+<p class="lead">महीना चुनिए और जानिए कि अभी क्या बोना या लगाना ठीक है। मौसम इलाके के हिसाब से बदलता है, स्थानीय कृषि केंद्र से भी पूछ लीजिए।</p>
+<div class="cal" id="cal"></div><div id="calout" class="card"></div>
+</section>
+
+<section id="doctor">
+<h2>🩺 पौधा डॉक्टर</h2>
+<p class="lead">लक्षण चुनिए, कारण और घरेलू उपाय पाइए।</p>
+<div class="filters"><label>लक्षण / Symptom<select id="sym" onchange="doc()"></select></label></div>
+<div class="doc" id="docout"></div>
+<div class="note">रासायनिक दवा इस्तेमाल करनी हो तो लेबल की मात्रा ही रखिए, और छिड़काव सुबह या शाम को कीजिए।</div>
+</section>
+
+<section class="alt" id="tools">
+<h2>🧮 काम के कैलकुलेटर</h2>
+<p class="lead">पानी का शेड्यूल और गमले की मिट्टी का हिसाब।</p>
+<div class="calc">
+<div class="card"><h3>💧 पानी शेड्यूल</h3>
+<label>पौधा चुनिए<select id="wp" onchange="water()"></select></label>
+<label>मौसम<select id="ws" onchange="water()"><option value="1">गर्मी (अप्रैल-जून)</option><option value="2">बारिश (जुलाई-सितंबर)</option><option value="3">सर्दी (नवंबर-फरवरी)</option><option value="1.5">बाकी महीने</option></select></label>
+<div class="bigout" id="wout"></div></div>
+<div class="card"><h3>🪣 गमले की मिट्टी मिक्स</h3>
+<label>गमले का आकार (इंच)<select id="pz" onchange="soil()"><option>6</option><option selected>8</option><option>10</option><option>12</option><option>14</option><option>18</option></select></label>
+<label>किस्म<select id="pk" onchange="soil()"><option value="g">सामान्य (फूल/सजावटी)</option><option value="s">कैक्टस / सक्युलेंट</option><option value="v">सब्ज़ी / फल</option></select></label>
+<div class="bigout" id="sout"></div></div>
+</div>
+</section>
+
+<section id="dekhbhal">
+<h2>देखभाल के आसान नियम</h2>
+<div class="tips">
+<div class="card"><h3>💧 पानी</h3><p>उंगली से मिट्टी की ऊपरी परत छूकर देखिए। सूखी हो तभी पानी दीजिए। ज़्यादा पानी से जड़ें सड़ती हैं।</p></div>
+<div class="card"><h3>☀️ धूप</h3><p>अंदर वाले पौधों को सीधी तेज़ धूप नहीं, खिड़की की रोशनी चाहिए। फूल वाले पौधों को ज़्यादातर 5 से 6 घंटे की धूप चाहिए।</p></div>
+<div class="card"><h3>🐛 कीट और रोग</h3><p>पत्तों के पीछे जांचते रहिए। कीटनाशक का इस्तेमाल सिर्फ़ उसके लेबल पर लिखी मात्रा के अनुसार कीजिए।</p></div>
+<div class="card"><h3>🌾 खाद</h3><p>महीने में एक बार वर्मीकम्पोस्ट या गोबर की सड़ी खाद दीजिए। नीम की खली मिट्टी के कीड़ों से बचाती है।</p></div>
+</div>
+</section>
+
+<section id="sampark">
+<h2>दुकान पर आइए</h2>
+<p class="lead">अपनी चुनी सूची WhatsApp पर भेजिए, हम स्टॉक पक्का करके बताएंगे।</p>
+<div class="card"><p><b>📍 पता:</b> [यहां दुकान का पता लिखें] &nbsp; <b>📞 फ़ोन:</b> [नंबर] &nbsp; <b>🕘 समय:</b> [सुबह 8 से शाम 7]</p>
+<div class="btns"><button class="btn" onclick="openCart()">🛒 मेरी सूची देखें</button></div></div>
+</section>
+<footer>AgroNursery: बेहतर उगाइए, बेहतर संभालिए। उदाहरण के पौधे और कीमतें सिर्फ़ डेमो हैं।</footer>
+
+<button class="btn fab" id="fab" onclick="openCart()">🛒 सूची (<span id="cc">0</span>)</button>
+<div class="modal" id="md" onclick="if(event.target==this)closeM()"><div class="box" id="mb"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const PHONE='91XXXXXXXXXX'; // यहां अपना WhatsApp नंबर डालें (91 के साथ)
+const PL=[
+['Snake Plant','स्नेक प्लांट','अंदर','नुकीले','नहीं','कम','कम',260,24],
+['ZZ Plant','ज़ेड ज़ेड प्लांट','अंदर','चमकदार','नहीं','कम','कम',380,12],
+['Money Plant','मनी प्लांट','अंदर','दिल जैसे','नहीं','मध्यम','कम',120,40],
+['Peace Lily','पीस लिली','अंदर','चौड़े','हां (सफ़ेद)','कम','मध्यम',320,7],
+['Areca Palm','एरेका पाम','अंदर','पतले लंबे','नहीं','मध्यम','मध्यम',450,10],
+['Aloe Vera','एलोवेरा','अंदर','मोटे','नहीं','तेज़','कम',110,30],
+['Hibiscus','गुड़हल','बाहर','चौड़े','हां (लाल)','तेज़','मध्यम',150,18],
+['Rose','गुलाब','बाहर','चौड़े','हां (लाल)','तेज़','ज़्यादा',140,5],
+['Bougainvillea','बोगनवेलिया','बाहर','दिल जैसे','हां (गुलाबी)','तेज़','कम',180,14],
+['Tulsi','तुलसी','बाहर','चौड़े','नहीं','तेज़','कम',60,35]];
+// name, hindi, size, color, shape, season, price
+PL.push(...[
+['Spider Plant','स्पाइडर प्लांट','अंदर','पतले लंबे','नहीं','मध्यम','कम'],['Rubber Plant','रबर प्लांट','अंदर','चमकदार','नहीं','मध्यम','कम'],['Jade Plant','जेड प्लांट','अंदर','मोटे','नहीं','तेज़','कम'],['Boston Fern','बोस्टन फर्न','अंदर','पतले लंबे','नहीं','मध्यम','मध्यम'],['Chinese Evergreen','चाइनीज़ एवरग्रीन','अंदर','चौड़े','नहीं','कम','कम'],['Dracaena','ड्रेसेना','अंदर','नुकीले','नहीं','मध्यम','कम'],['Monstera','मॉन्स्टेरा','अंदर','चौड़े','नहीं','मध्यम','मध्यम'],['Lucky Bamboo','लकी बैम्बू','अंदर','पतले लंबे','नहीं','कम','कम'],['Cactus','कैक्टस','अंदर','मोटे','नहीं','तेज़','कम'],['Echeveria','एचेवेरिया','अंदर','मोटे','नहीं','तेज़','कम'],['African Violet','अफ्रीकन वायलेट','अंदर','चौड़े','हां (बैंगनी)','मध्यम','मध्यम'],['Anthurium','एंथुरियम','अंदर','दिल जैसे','हां (लाल)','मध्यम','मध्यम'],['Orchid','ऑर्किड','अंदर','चौड़े','हां (गुलाबी)','मध्यम','ज़्यादा'],['Bonsai Ficus','बोन्साई फाइकस','अंदर','चमकदार','नहीं','मध्यम','मध्यम'],['Coleus','कोलियस','अंदर','चौड़े','नहीं','मध्यम','कम'],
+['Jasmine (Mogra)','मोगरा','बाहर','छोटे गोल','हां (सफ़ेद)','तेज़','मध्यम'],['Jasmine (Chameli)','चमेली','बाहर','छोटे गोल','हां (सफ़ेद)','तेज़','कम'],['Marigold','गेंदा','बाहर','पतले लंबे','हां (नारंगी)','तेज़','कम'],['Sunflower','सूरजमुखी','बाहर','चौड़े','हां (पीला)','तेज़','कम'],['Petunia','पिटूनिया','बाहर','चौड़े','हां (गुलाबी)','तेज़','मध्यम'],['Zinnia','जिनिया','बाहर','चौड़े','हां (नारंगी)','तेज़','कम'],['Dahlia','डहलिया','बाहर','चौड़े','हां (लाल)','तेज़','मध्यम'],['Chrysanthemum','गुलदाउदी','बाहर','चौड़े','हां (पीला)','तेज़','मध्यम'],['Periwinkle (Sadabahar)','सदाबहार','बाहर','छोटे गोल','हां (गुलाबी)','तेज़','कम'],['Oleander (Kaner)','कनेर','बाहर','पतले लंबे','हां (पीला)','तेज़','कम'],['Ixora','इक्सोरा (रुक्मणी)','बाहर','चमकदार','हां (लाल)','तेज़','कम'],['Frangipani (Champa)','चंपा','बाहर','चौड़े','हां (सफ़ेद)','तेज़','कम'],['Night Queen (Raat Rani)','रात की रानी','बाहर','पतले लंबे','हां (सफ़ेद)','तेज़','कम'],['Canna Lily','कैना','बाहर','चौड़े','हां (लाल)','तेज़','मध्यम'],['Moss Rose (Portulaca)','नौ बजे का फूल','बाहर','मोटे','हां (गुलाबी)','तेज़','कम'],['Balsam (Gulmehndi)','गुलमेहंदी','बाहर','पतले लंबे','हां (गुलाबी)','मध्यम','कम'],['Cosmos','कॉसमॉस','बाहर','पतले लंबे','हां (गुलाबी)','तेज़','कम'],['Croton','क्रोटन','बाहर','चौड़े','नहीं','तेज़','मध्यम'],['Thuja','थूजा','बाहर','नुकीले','नहीं','तेज़','कम'],['Ashoka','अशोक','बाहर','पतले लंबे','नहीं','तेज़','कम'],
+['Mint (Pudina)','पुदीना','बाहर','चौड़े','नहीं','मध्यम','कम'],['Curry Leaf','करी पत्ता','बाहर','छोटे गोल','नहीं','तेज़','कम'],['Lemon','नींबू','बाहर','चमकदार','हां (सफ़ेद)','तेज़','मध्यम'],['Guava','अमरूद','बाहर','चौड़े','हां (सफ़ेद)','तेज़','कम'],['Mango','आम','बाहर','पतले लंबे','हां (पीला)','तेज़','मध्यम'],['Papaya','पपीता','बाहर','चौड़े','नहीं','तेज़','कम'],['Banana','केला','बाहर','चौड़े','नहीं','तेज़','मध्यम'],['Pomegranate','अनार','बाहर','चमकदार','हां (लाल)','तेज़','कम'],['Neem','नीम','बाहर','नुकीले','नहीं','तेज़','कम'],['Ashwagandha','अश्वगंधा','बाहर','चौड़े','नहीं','तेज़','कम'],['Giloy','गिलोय','बाहर','दिल जैसे','नहीं','मध्यम','कम'],['Lemongrass','लेमनग्रास','बाहर','पतले लंबे','नहीं','तेज़','कम'],['Brahmi','ब्राह्मी','बाहर','छोटे गोल','हां (सफ़ेद)','मध्यम','कम']
+]);
+const FC={'सफ़ेद':'#ffffff','लाल':'#d6342c','गुलाबी':'#ec7fa9','पीला':'#f2c230','नारंगी':'#ef8a2a','बैंगनी':'#8a5bc2'};
+const LP={'नुकीले':['M0 0 L-5 -30 L0 -58 L5 -30Z',[-32,-11,11,32]],'चौड़े':['M0 0 C-18 -14 -16 -38 0 -46 C16 -38 18 -14 0 0Z',[-55,-25,0,25,55]],'दिल जैसे':['M0 0 C-22 -12 -20 -34 -9 -34 C-3 -34 0 -30 0 -27 C0 -30 3 -34 9 -34 C20 -34 22 -12 0 0Z',[-55,-20,15,50]],'पतले लंबे':['M0 0 C-3 -20 -8 -40 -14 -56 C-4 -44 3 -24 0 0Z',[-60,-35,-12,12,35,60]],'मोटे':['M0 0 C-14 -6 -12 -28 0 -34 C12 -28 14 -6 0 0Z',[-70,-35,0,35,70]],'चमकदार':['M0 0 C-16 -14 -14 -40 0 -48 C14 -40 16 -14 0 0Z',[-45,0,45]],'छोटे गोल':['M0 0 L0 -22 M-8 -30 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0',[-60,-30,0,30,60]]};
+function art(d){const [p,an]=LP[d[3]]||LP['चौड़े'];const g=an.map((a,i)=>`<g transform="translate(60,74) rotate(${a})"><path d="${p}" fill="${i%2?'#5b9a4b':'#3f7a3a'}" stroke="#2a5a2a" stroke-width="1"/></g>`).join('');
+const m=/\((.*?)\)/.exec(d[4]),c=m&&FC[m[1]];const fl=c?[[40,30],[62,18],[82,32]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="8" fill="${c}" stroke="#0004"/><circle cx="${x}" cy="${y}" r="2.5" fill="#f2b01e"/>`).join(''):'';
+const base=d[2]=='अंदर'?'<path d="M40 74 H80 L75 96 H45Z" fill="#b86b45"/><rect x="38" y="70" width="44" height="6" rx="2" fill="#c97d55"/>':'<ellipse cx="60" cy="88" rx="44" ry="10" fill="#7a5638"/><ellipse cx="60" cy="80" rx="28" ry="5" fill="#8b6644"/>';
+return `<svg viewBox="0 0 120 100" role="img" aria-label="${d[0]}">${g}${fl}${base}</svg>`}
+
+const SD=[
+['Tomato','टमाटर','छोटा','पीला','चपटा','सर्दी',160],
+['Okra','भिंडी','बड़ा','काला','गोल','गर्मी/बारिश',130],
+['Chilli','मिर्च','छोटा','पीला','चपटा','गर्मी/बारिश',150],
+['Marigold','गेंदा','बड़ा','काला','लंबा','सर्दी',85],
+['Spinach','पालक','मध्यम','भूरा','गोल','सर्दी',75],
+['Coriander','धनिया','मध्यम','भूरा','गोल','सर्दी',60],
+['Pumpkin','कद्दू','बड़ा','सफ़ेद','चपटा','गर्मी/बारिश',110],
+['Sunflower','सूरजमुखी','बड़ा','काला','लंबा','सर्दी',95]];
+let lang='hi';try{lang=localStorage.getItem('lang')||'hi'}catch(e){}
+const LC={hi:'hi-IN',en:'en-IN',pa:'pa-IN'},T0=document.title;
+const FRUIT=['Lemon','Guava','Mango','Papaya','Banana','Pomegranate','Curry Leaf'],HERB=['Tulsi','Aloe Vera','Mint (Pudina)','Neem','Ashwagandha','Giloy','Lemongrass','Brahmi'];
+const F={P:[['जगह','place',['अंदर','बाहर']],['पत्ते कैसे हैं','leaf',['नुकीले','चौड़े','दिल जैसे','पतले लंबे','मोटे','चमकदार','छोटे गोल']],['फूल है?','flower',['नहीं','हां (सफ़ेद)','हां (लाल)','हां (गुलाबी)','हां (पीला)','हां (नारंगी)','हां (बैंगनी)']],['रोशनी','light',['कम','मध्यम','तेज़']]],
+S:[['बीज का आकार','size',['छोटा','मध्यम','बड़ा']],['रंग','color',['काला','भूरा','पीला','सफ़ेद']],['आकार का रूप','shape',['गोल','चपटा','लंबा']]]};
+const K={P:{place:2,leaf:3,flower:4,light:5},S:{size:2,color:3,shape:4}};
+const CARE={'कम':['10-14 दिन में','महीने में 1 बार (हल्की)'],'मध्यम':['5-7 दिन में','15 दिन में 1 बार'],'ज़्यादा':['2-3 दिन में','हफ्ते में 1 बार']};
+const LGT={'कम':'कम रोशनी / छाया चलेगी','मध्यम':'अप्रत्यक्ष तेज़ रोशनी या 3-4 घंटे धूप','तेज़':'सीधी धूप, 5-6 घंटे'};
+let m='P',sel={},fav=[],cart=[];
+try{fav=JSON.parse(localStorage.getItem('fav')||'[]');cart=JSON.parse(localStorage.getItem('cart')||'[]')}catch(e){}
+const sv=()=>{try{localStorage.setItem('fav',JSON.stringify(fav));localStorage.setItem('cart',JSON.stringify(cart))}catch(e){}};
+function theme(){const r=document.documentElement,d=r.dataset.theme?r.dataset.theme=='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=d?'light':'dark'}
+const stock=d=>d[8]==null?'':d[8]==0?'<span class="tag out">स्टॉक खत्म</span>':d[8]<=6?`<span class="tag lo">सिर्फ़ ${d[8]} बचे</span>`:`<span class="tag">स्टॉक में ${d[8]}</span>`;
+const kind=d=>FRUIT.includes(d[0])?'fr':HERB.includes(d[0])?'hb':'';
+function card(d,part){const id=PL.indexOf(d),h=fav.includes(d[0]);
+return `<div class="card"><button class="heart" onclick="tf(${id})" aria-label="पसंद">${h?'❤️':'🤍'}</button><div class="img">${art(d)}</div><h3>${d[1]}</h3><small data-keep>${lang=='en'?d[1]:d[0]}</small><p>${d[2]} · फूल: ${d[4]} · रोशनी: ${d[5]} · देखभाल: ${d[6]}</p><span class="tag">${d[7]?'₹'+d[7]+' (डेमो)':'कीमत दुकान पर पूछें'}</span>${stock(d)}${part?'<span class="tag">आंशिक मेल</span>':''}<div class="btns"><button class="btn sm sec" onclick="info(${id})">विवरण</button><button class="btn sm" onclick="add(${id})">+ सूची में जोड़ें</button></div></div>`}
+function tf(i){const n=PL[i][0];fav=fav.includes(n)?fav.filter(x=>x!=n):[...fav,n];sv();dir();res()}
+function dir(){const q=($('#sq').value||'').toLowerCase().trim(),p=$('#sp').value,t=$('#st').value;
+const r=PL.filter(d=>(!p||d[2]==p)&&(!q||(d[0]+' '+d[1]).toLowerCase().includes(q))&&(!t||(t=='fl'?d[4]!='नहीं':t=='lo'?d[6]=='कम':t=='fav'?fav.includes(d[0]):kind(d)==t)));
+$('#cnt').textContent=r.length+' पौधे / plants';$('#all').innerHTML=r.map(d=>card(d)).join('')||'<div class="card">कोई पौधा नहीं मिला। दूसरा नाम लिखकर देखिए।</div>'}
+function info(i){const d=PL[i],c=CARE[d[6]],out=d[2]=='बाहर';
+$('#mb').innerHTML=`<button class="x" onclick="closeM()">×</button><div class="img">${art(d)}</div><h2>${d[1]}</h2><small data-keep>${lang=='en'?d[1]:d[0]}</small>
+<table><tr><td>धूप</td><td>${LGT[d[5]]}</td></tr><tr><td>पानी</td><td>गर्मी में ${c[0]}; सर्दी में ${c[1]}</td></tr><tr><td>मिट्टी</td><td>${d[3]=='मोटे'?'रेतीली, बढ़िया जल-निकासी (मिट्टी 1: रेत 1)':'दोमट + वर्मीकम्पोस्ट (मिट्टी 2: खाद 1)'}</td></tr><tr><td>खाद</td><td>${d[4]!='नहीं'?'फूल के मौसम में महीने में 1 बार (गोबर खाद/बोन मील)':'महीने में 1 बार वर्मीकम्पोस्ट'}</td></tr><tr><td>जगह</td><td>${out?'खुली छत, बगीचा या बालकनी':'कमरा, खिड़की के पास'}</td></tr><tr><td>कीमत</td><td>${d[7]?'₹'+d[7]+' (डेमो)':'दुकान पर पूछें'}</td></tr></table>
+<div class="btns"><button class="btn" onclick="add(${i});closeM()">+ सूची में जोड़ें</button></div>`;$('#md').classList.add('show')}
+function closeM(){$('#md').classList.remove('show')}
+function add(i){const n=PL[i][0];if(!cart.find(c=>c.n==n))cart.push({n,q:1});sv();cc();toast()}
+function toast(){const f=$('#fab');f.textContent='✓ जुड़ गया';setTimeout(cc,900)}
+function cc(){$('#fab').innerHTML='🛒 सूची ('+cart.length+')'}
+function openCart(){const tot=cart.reduce((s,c)=>{const d=PL.find(x=>x[0]==c.n);return s+(d[7]||0)*c.q},0);
+$('#mb').innerHTML=`<button class="x" onclick="closeM()">×</button><h2>🛒 मेरी सूची</h2>`+(cart.length?cart.map((c,i)=>`<div class="row"><span>${PL.find(x=>x[0]==c.n)[1]}</span><span><button class="btn sm out" onclick="q(${i},-1)">−</button> ${c.q} <button class="btn sm out" onclick="q(${i},1)">+</button></span></div>`).join('')+`<p>अनुमानित कुल: <b>₹${tot}</b> (डेमो कीमत)</p><div class="btns"><button class="btn" onclick="wa()">WhatsApp पर भेजें</button><button class="btn out" onclick="cart=[];sv();cc();openCart()">खाली करें</button></div>`:'<p>सूची खाली है। पौधों में "+ सूची में जोड़ें" दबाइए।</p>');$('#md').classList.add('show')}
+function q(i,n){cart[i].q=Math.max(0,cart[i].q+n);cart=cart.filter(c=>c.q>0);sv();cc();openCart()}
+function wa(){const t='नमस्ते AgroNursery, मुझे ये पौधे चाहिए:\n'+cart.map(c=>`• ${PL.find(x=>x[0]==c.n)[1]} (${c.n}) × ${c.q}`).join('\n')+'\nकृपया स्टॉक और कीमत बताइए।';open('https://wa.me/'+PHONE+'?text='+encodeURIComponent(tr(t)),'_blank')}
+function mode(x){m=x;sel={};$('#tP').classList.toggle('on',x=='P');$('#tS').classList.toggle('on',x=='S');draw()}
+function draw(){$('#f').innerHTML=F[m].map(([t,k,o])=>`<label>${t}<select onchange="sel['${k}']=this.value;res()"><option value="">कोई भी</option>${o.map(v=>`<option value="${v}">${v}</option>`).join('')}</select></label>`).join('');res()}
+function res(){const keys=Object.keys(sel).filter(k=>sel[k]),D=m=='P'?PL:SD;
+const sc=D.map(d=>({d,s:keys.filter(k=>d[K[m][k]]==sel[k]).length})).filter(x=>!keys.length||x.s>0).sort((a,b)=>b.s-a.s);
+$('#r').innerHTML=sc.length?sc.map(({d,s})=>{const full=!keys.length||s==keys.length;
+return m=='P'?card(d,!full):`<div class="card"><div class="img" style="font-size:54px;justify-content:center">🌱</div><h3>${d[1]}</h3><small data-keep>${lang=='en'?d[1]:d[0]}</small><p>बीज ${d[2]}, ${d[3]}, ${d[4]}. बोने का मौसम: ${d[5]}.</p><span class="tag">₹${d[6]} का पैकेट</span>${full?'':'<span class="tag">आंशिक मेल</span>'}</div>`}).join(''):'<div class="card">इन विकल्पों से कोई मेल नहीं मिला। एक-दो विकल्प हटाकर फिर देखिए।</div>'}
+// बुवाई कैलेंडर
+const MO=['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+const CAL=[['पालक, धनिया, मटर, मूली, गाजर','गेंदा, सूरजमुखी की नर्सरी, गुलाब की कटाई-छंटाई'],['भिंडी (अंत में), लौकी, तोरी, सूरजमुखी','जिनिया, कॉसमॉस, गुलाब में खाद'],['भिंडी, लौकी, कद्दू, खीरा, टिंडा','गुड़हल, गेंदा, तुलसी'],['मूंग, लोबिया, चौलाई, कद्दू','सदाबहार, पोर्चुलाका; पानी बढ़ाइए'],['लोबिया, भिंडी, ग्वार, अरबी','छाया-जाल लगाइए, सुबह-शाम पानी'],['मक्का, भिंडी, मिर्च की नर्सरी, तोरई','बोगनवेलिया की छंटाई, मोगरा'],['धान रोपाई, मक्का, लोबिया, करेला','आम, अमरूद, नींबू, अशोक के पौधे लगाने का सबसे अच्छा समय'],['फूलगोभी की नर्सरी, गाजर (अंत), मूली','गुलमेहंदी, कैना, चंपा; पानी जमा न होने दें'],['गाजर, शलगम, पालक, धनिया, सरसों','गेंदा, गुलदाउदी की कटिंग'],['गेहूं की तैयारी, मटर, पालक, मेथी, मूली, सरसों','पिटूनिया, डहलिया, गुलदाउदी, गुलाब नया लगाएं'],['गेहूं, मटर, चना, सरसों, लहसुन','पाले से अंदर वाले पौधे बचाइए'],['पालक, मूली, गाजर, मटर','सर्दी में पानी कम; खाद रोकें']];
+const mm=new Date().getMonth();
+$('#cal').innerHTML=MO.map((n,i)=>`<button onclick="cal(${i})" id="c${i}" class="${i==mm?'now':''}">${n}</button>`).join('');
+function cal(i){document.querySelectorAll('.cal button').forEach((b,j)=>b.classList.toggle('on',i==j));$('#calout').innerHTML=`<h3>${MO[i]}</h3><p>🌱 <b>सब्ज़ी / बीज:</b> ${CAL[i][0]}</p><p>🌸 <b>पौधे / फूल:</b> ${CAL[i][1]}</p>`}
+cal(mm);
+// पौधा डॉक्टर
+const DOC=[['पत्ते पीले पड़ रहे हैं','ज़्यादा पानी, जल-निकासी की कमी, या नाइट्रोजन की कमी','पानी कम कीजिए, गमले में छेद जांचिए, सड़ी खाद या वर्मीकम्पोस्ट दीजिए।'],['पत्तों के किनारे भूरे / सूखे','कम नमी, तेज़ धूप या नमक जमना','पत्तों पर पानी छिड़कें, छाया दें, गमले को ऊपर से खूब पानी देकर धो दें।'],['पत्तों पर सफ़ेद पाउडर','चूर्णिल आसिता (Powdery mildew)','प्रभावित पत्ते हटाएं। छाछ (1:10) या नीम तेल का छिड़काव करें, हवा आने दें।'],['पत्तों पर काले / भूरे धब्बे','फफूंद (Leaf spot)','ऊपर से पानी न डालें। संक्रमित पत्ते जलाएं, नीम तेल या लेबल अनुसार फफूंदनाशी दें।'],['पौधा मुरझा रहा है','पानी की कमी या जड़ सड़न','मिट्टी छूकर देखिए। सूखी हो तो पानी दें; गीली और बदबूदार हो तो पानी रोकें और मिट्टी बदलें।'],['पत्तों के नीचे छोटे कीड़े / चिपचिपापन','एफिड, मीलीबग, सफ़ेद मक्खी','साबुन-पानी (1 चम्मच/लीटर) या नीम तेल (5 मिली/लीटर) का छिड़काव हर 5 दिन में।'],['फूल नहीं आ रहे','कम धूप या ज़्यादा नाइट्रोजन','5-6 घंटे धूप दें, फॉस्फोरस वाली खाद (बोन मील) दें, सूखे फूल तोड़ें।'],['पौधा लंबा और पतला हो रहा है','रोशनी की कमी','पौधे को तेज़ रोशनी में ले जाएं और ऊपर की कोंपल की छंटाई करें।'],['जड़ों में सफ़ेद फफूंद / बदबू','जड़ सड़न','पौधा निकालें, सड़ी जड़ें काटें, नई रेतीली मिट्टी में लगाएं।'],['पत्ते मुड़ रहे हैं','थ्रिप्स, माइट्स या गर्मी का तनाव','पत्तों के पीछे जांचें, नीम तेल छिड़कें, दोपहर की धूप से बचाएं।']];
+$('#sym').innerHTML=DOC.map((d,i)=>`<option value="${i}">${d[0]}</option>`).join('');
+function doc(){const d=DOC[$('#sym').value];$('#docout').innerHTML=`<details open><summary>कारण</summary><p>${d[1]}</p></details><details open><summary>उपाय</summary><p>${d[2]}</p></details>`}doc();
+// कैलकुलेटर
+$('#wp').innerHTML=PL.map((d,i)=>`<option value="${i}">${d[1]}</option>`).join('');
+function water(){const d=PL[$('#wp').value],s=$('#ws').value,base={'कम':10,'मध्यम':5,'ज़्यादा':2.5}[d[6]],lt={'तेज़':.8,'मध्यम':1,'कम':1.2}[d[5]];
+let days=Math.round(base*lt*(s=='1'?.6:s=='3'?1.6:s=='2'?1.2:1));days=Math.max(1,days);
+const nd=new Date(Date.now()+days*864e5).toLocaleDateString(LC[lang],{day:'numeric',month:'long'}),nm=tr(d[1]);
+$('#wout').innerHTML=lang=='en'?`Water ${nm} every <b>${days} days</b>.<br><small>Next watering: ${nd}. Always check the soil by touch first.</small>`:lang=='pa'?`${nm} ਨੂੰ ਹਰ <b>${days} ਦਿਨ</b> ਬਾਅਦ ਪਾਣੀ ਦਿਓ।<br><small>ਅਗਲਾ ਪਾਣੀ: ${nd}। ਪਹਿਲਾਂ ਹਮੇਸ਼ਾ ਮਿੱਟੀ ਛੂਹ ਕੇ ਜਾਂਚੋ।</small>`:`${d[1]} को हर <b>${days} दिन</b> में पानी दीजिए।<br><small>अगला पानी: ${nd}. हमेशा पहले मिट्टी छूकर जांचिए।</small>`}
+function soil(){const z=+$('#pz').value,k=$('#pk').value,L=Math.round(Math.PI*Math.pow(z*2.54/2,2)*z*2.54*.75/1000*10)/10,
+mix={g:[['दोमट मिट्टी',.5],['वर्मीकम्पोस्ट',.3],['कोकोपीट',.2]],s:[['मोटी रेत',.4],['दोमट मिट्टी',.4],['पर्लाइट / छोटे कंकड़',.2]],v:[['दोमट मिट्टी',.4],['सड़ी गोबर खाद',.3],['कोकोपीट',.2],['नीम खली',.1]]}[k];
+$('#sout').innerHTML=`${z} इंच का गमला: लगभग <b>${L} लीटर</b> मिक्स<br>`+mix.map(([n,p])=>`• ${n}: ${(L*p).toFixed(1)} L (${p*100}%)`).join('<br>')}
+$('#n1').textContent=PL.length;$('#n2').textContent=SD.length;$('#n3').textContent=PL.filter(d=>d[8]>0).length;
+cc();dir();draw();
+const PA={'Snake Plant':'ਸਨੇਕ ਪਲਾਂਟ','ZZ Plant':'ਜ਼ੈੱਡ ਜ਼ੈੱਡ ਪਲਾਂਟ','Money Plant':'ਮਨੀ ਪਲਾਂਟ','Peace Lily':'ਪੀਸ ਲਿਲੀ','Areca Palm':'ਏਰੇਕਾ ਪਾਮ','Aloe Vera':'ਐਲੋਵੇਰਾ','Hibiscus':'ਗੁੜਹਲ','Rose':'ਗੁਲਾਬ','Bougainvillea':'ਬੋਗਨਵਿਲੀਆ','Tulsi':'ਤੁਲਸੀ','Spider Plant':'ਸਪਾਈਡਰ ਪਲਾਂਟ','Rubber Plant':'ਰਬੜ ਪਲਾਂਟ','Jade Plant':'ਜੇਡ ਪਲਾਂਟ','Boston Fern':'ਬੋਸਟਨ ਫਰਨ','Chinese Evergreen':'ਚਾਈਨੀਜ਼ ਐਵਰਗ੍ਰੀਨ','Dracaena':'ਡ੍ਰੇਸੀਨਾ','Monstera':'ਮੌਨਸਟੇਰਾ','Lucky Bamboo':'ਲੱਕੀ ਬਾਂਸ','Cactus':'ਕੈਕਟਸ (ਥੋਹਰ)','Echeveria':'ਇਕੇਵੇਰੀਆ','African Violet':'ਅਫ਼ਰੀਕਨ ਵਾਇਲਟ','Anthurium':'ਐਂਥੂਰੀਅਮ','Orchid':'ਆਰਕਿਡ','Bonsai Ficus':'ਬੋਨਸਾਈ ਫਾਈਕਸ','Coleus':'ਕੋਲੀਅਸ','Jasmine (Mogra)':'ਮੋਗਰਾ','Jasmine (Chameli)':'ਚਮੇਲੀ','Marigold':'ਗੇਂਦਾ','Sunflower':'ਸੂਰਜਮੁਖੀ','Petunia':'ਪੇਟੂਨੀਆ','Zinnia':'ਜ਼ਿਨੀਆ','Dahlia':'ਡਾਹਲੀਆ','Chrysanthemum':'ਗੁਲਦਾਊਦੀ','Periwinkle (Sadabahar)':'ਸਦਾਬਹਾਰ','Oleander (Kaner)':'ਕਨੇਰ','Ixora':'ਇਕਸੋਰਾ','Frangipani (Champa)':'ਚੰਪਾ','Night Queen (Raat Rani)':'ਰਾਤ ਦੀ ਰਾਣੀ','Canna Lily':'ਕੈਨਾ','Moss Rose (Portulaca)':'ਨੌਂ ਵਜੇ ਦਾ ਫੁੱਲ','Balsam (Gulmehndi)':'ਗੁਲਮਹਿੰਦੀ','Cosmos':'ਕੌਸਮੌਸ','Croton':'ਕਰੋਟਨ','Thuja':'ਥੂਜਾ','Ashoka':'ਅਸ਼ੋਕ','Mint (Pudina)':'ਪੁਦੀਨਾ','Curry Leaf':'ਕੜ੍ਹੀ ਪੱਤਾ','Lemon':'ਨਿੰਬੂ','Guava':'ਅਮਰੂਦ','Mango':'ਅੰਬ','Papaya':'ਪਪੀਤਾ','Banana':'ਕੇਲਾ','Pomegranate':'ਅਨਾਰ','Neem':'ਨਿੰਮ','Ashwagandha':'ਅਸ਼ਵਗੰਧਾ','Giloy':'ਗਿਲੋਅ','Lemongrass':'ਲੈਮਨਗ੍ਰਾਸ','Brahmi':'ਬ੍ਰਹਮੀ','Tomato':'ਟਮਾਟਰ','Okra':'ਭਿੰਡੀ','Chilli':'ਮਿਰਚ','Spinach':'ਪਾਲਕ','Coriander':'ਧਨੀਆ','Pumpkin':'ਕੱਦੂ'};
+const TR={};
+const Z=(a,e,p)=>a.forEach((h,i)=>TR[h]=[e[i],p[i]]);
+[
+['पहचान','Identify','ਪਛਾਣ'],['पौधे','Plants','ਪੌਦੇ'],['पौधा','Plant','ਪੌਦਾ'],['बीज','Seed','ਬੀਜ'],['बुवाई कैलेंडर','Sowing Calendar','ਬਿਜਾਈ ਕੈਲੰਡਰ'],['पौधा डॉक्टर','Plant Doctor','ਪੌਦਾ ਡਾਕਟਰ'],['कैलकुलेटर','Calculators','ਕੈਲਕੁਲੇਟਰ'],['संपर्क','Contact','ਸੰਪਰਕ'],['थीम बदलें','Change theme','ਥੀਮ ਬਦਲੋ'],['भाषा / Language','Language','ਭਾਸ਼ਾ'],
+['पौधे और बीज पहचानें','Identify Plants & Seeds','ਪੌਦੇ ਅਤੇ ਬੀਜ ਪਛਾਣੋ'],
+['पौधा या बीज पहचानिए, ','Identify your plant or seed, ','ਪੌਦਾ ਜਾਂ ਬੀਜ ਪਛਾਣੋ, '],['सही देखभाल','then care for it right','ਫਿਰ ਸਹੀ ਸੰਭਾਲ'],['कीजिए','','ਕਰੋ'],
+['पत्ता, फूल, धूप या बीज का रंग चुनिए। पहचान, बुवाई का समय, पानी का शेड्यूल और रोग का इलाज, सब एक जगह।','Pick the leaf, flower, sunlight or seed colour. Identification, sowing time, watering schedule and plant disease cures, all in one place.','ਪੱਤਾ, ਫੁੱਲ, ਧੁੱਪ ਜਾਂ ਬੀਜ ਦਾ ਰੰਗ ਚੁਣੋ। ਪਛਾਣ, ਬਿਜਾਈ ਦਾ ਸਮਾਂ, ਪਾਣੀ ਦਾ ਸ਼ਡਿਊਲ ਅਤੇ ਰੋਗ ਦਾ ਇਲਾਜ, ਸਭ ਇੱਕੋ ਥਾਂ।'],
+['पहचान शुरू करें','Start identifying','ਪਛਾਣ ਸ਼ੁਰੂ ਕਰੋ'],['पौधा बीमार है?','Is your plant sick?','ਪੌਦਾ ਬਿਮਾਰ ਹੈ?'],['पौधों की किस्में','Plant varieties','ਪੌਦਿਆਂ ਦੀਆਂ ਕਿਸਮਾਂ'],['बीज की किस्में','Seed varieties','ਬੀਜਾਂ ਦੀਆਂ ਕਿਸਮਾਂ'],['स्टॉक में पौधे','Plants in stock','ਸਟਾਕ ਵਿੱਚ ਪੌਦੇ'],
+['पौधा या बीज पहचानें','Identify a plant or seed','ਪੌਦਾ ਜਾਂ ਬੀਜ ਪਛਾਣੋ'],
+['जो आप देख रहे हैं, उसके हिसाब से विकल्प चुनिए। जितने कम विकल्प चुनेंगे, उतने ज़्यादा नतीजे दिखेंगे।','Choose options based on what you see. The fewer options you pick, the more results you get.','ਜੋ ਤੁਸੀਂ ਦੇਖ ਰਹੇ ਹੋ ਉਸ ਮੁਤਾਬਕ ਵਿਕਲਪ ਚੁਣੋ। ਜਿੰਨੇ ਘੱਟ ਵਿਕਲਪ ਚੁਣੋਗੇ, ਓਨੇ ਵੱਧ ਨਤੀਜੇ ਦਿਖਣਗੇ।'],
+['🪴 पौधा','🪴 Plant','🪴 ਪੌਦਾ'],['🌱 बीज','🌱 Seed','🌱 ਬੀਜ'],
+['जगह','Place','ਥਾਂ'],['पत्ते कैसे हैं','What are the leaves like','ਪੱਤੇ ਕਿਹੋ ਜਿਹੇ ਹਨ'],['फूल है?','Has flowers?','ਫੁੱਲ ਹਨ?'],['रोशनी','Light','ਰੌਸ਼ਨੀ'],['कोई भी','Any','ਕੋਈ ਵੀ'],['बीज का आकार','Seed size','ਬੀਜ ਦਾ ਆਕਾਰ'],['रंग','Colour','ਰੰਗ'],['आकार का रूप','Shape','ਸ਼ਕਲ'],
+['अंदर','Indoor','ਅੰਦਰ'],['बाहर','Outdoor','ਬਾਹਰ'],['नुकीले','Pointed','ਨੁਕੀਲੇ'],['चौड़े','Broad','ਚੌੜੇ'],['दिल जैसे','Heart-shaped','ਦਿਲ ਵਰਗੇ'],['पतले लंबे','Long & thin','ਪਤਲੇ ਲੰਮੇ'],['मोटे','Thick','ਮੋਟੇ'],['चमकदार','Glossy','ਚਮਕਦਾਰ'],['छोटे गोल','Small round','ਛੋਟੇ ਗੋਲ'],
+['नहीं','No','ਨਹੀਂ'],['हां (','Yes (','ਹਾਂ ('],['सफ़ेद','White','ਚਿੱਟਾ'],['लाल','Red','ਲਾਲ'],['गुलाबी','Pink','ਗੁਲਾਬੀ'],['पीला','Yellow','ਪੀਲਾ'],['नारंगी','Orange','ਸੰਤਰੀ'],['बैंगनी','Purple','ਬੈਂਗਣੀ'],['काला','Black','ਕਾਲਾ'],['भूरा','Brown','ਭੂਰਾ'],
+['कम','Low','ਘੱਟ'],['मध्यम','Medium','ਦਰਮਿਆਨਾ'],['तेज़','Bright','ਤੇਜ਼'],['ज़्यादा','High','ਵੱਧ'],['छोटा','Small','ਛੋਟਾ'],['बड़ा','Large','ਵੱਡਾ'],['गोल','Round','ਗੋਲ'],['चपटा','Flat','ਚਪਟਾ'],['लंबा','Long','ਲੰਮਾ'],
+['यह अंदाज़ा है, पक्का नतीजा नहीं। बीज की पक्की पहचान पैकेट पर लिखे नाम, ब्रांड और बैच नंबर से होती है। पक्का करने के लिए पौधा या बीज दुकान पर लाइए।','This is a guess, not a certain result. A seed is reliably identified by the name, brand and batch number on its packet. To be sure, bring the plant or seed to the shop.','ਇਹ ਅੰਦਾਜ਼ਾ ਹੈ, ਪੱਕਾ ਨਤੀਜਾ ਨਹੀਂ। ਬੀਜ ਦੀ ਪੱਕੀ ਪਛਾਣ ਪੈਕੇਟ ਉੱਤੇ ਲਿਖੇ ਨਾਮ, ਬ੍ਰਾਂਡ ਅਤੇ ਬੈਚ ਨੰਬਰ ਤੋਂ ਹੁੰਦੀ ਹੈ। ਪੱਕਾ ਕਰਨ ਲਈ ਪੌਦਾ ਜਾਂ ਬੀਜ ਦੁਕਾਨ ਉੱਤੇ ਲਿਆਓ।'],
+['इन विकल्पों से कोई मेल नहीं मिला। एक-दो विकल्प हटाकर फिर देखिए।','No match found. Remove one or two options and try again.','ਇਨ੍ਹਾਂ ਵਿਕਲਪਾਂ ਨਾਲ ਕੋਈ ਮੇਲ ਨਹੀਂ ਮਿਲਿਆ। ਇੱਕ-ਦੋ ਵਿਕਲਪ ਹਟਾ ਕੇ ਫਿਰ ਦੇਖੋ।'],
+[' · फूल: ',' · Flower: ',' · ਫੁੱਲ: '],[' · रोशनी: ',' · Light: ',' · ਰੌਸ਼ਨੀ: '],[' · देखभाल: ',' · Care: ',' · ਸੰਭਾਲ: '],['(डेमो)','(demo)','(ਡੈਮੋ)'],['कीमत दुकान पर पूछें','Ask price at the shop','ਕੀਮਤ ਦੁਕਾਨ ਤੋਂ ਪੁੱਛੋ'],['आंशिक मेल','Partial match','ਅੰਸ਼ਕ ਮੇਲ'],['विवरण','Details','ਵੇਰਵਾ'],['+ सूची में जोड़ें','+ Add to list','+ ਸੂਚੀ ਵਿੱਚ ਜੋੜੋ'],['पसंद','Favourite','ਪਸੰਦ'],
+['स्टॉक खत्म','Out of stock','ਸਟਾਕ ਖ਼ਤਮ'],['सिर्फ़ ','Only ','ਸਿਰਫ਼ '],[' बचे',' left',' ਬਚੇ'],['स्टॉक में ','In stock ','ਸਟਾਕ ਵਿੱਚ '],
+['बोने का मौसम: ','Sowing season: ','ਬਿਜਾਈ ਦਾ ਮੌਸਮ: '],['सर्दी','Winter','ਸਰਦੀ'],['गर्मी/बारिश','Summer/Monsoon','ਗਰਮੀ/ਬਰਸਾਤ'],[' का पैकेट',' packet',' ਦਾ ਪੈਕੇਟ'],
+['हमारे पौधे / Our plants','Our plants','ਸਾਡੇ ਪੌਦੇ'],['घर के अंदर और बाहर, दोनों के लिए। ❤️ दबाकर पसंद सेव कीजिए, और "विवरण" में पूरी देखभाल गाइड देखिए।','For indoors and outdoors. Tap ❤️ to save favourites, and see the full care guide in "Details".','ਘਰ ਦੇ ਅੰਦਰ ਅਤੇ ਬਾਹਰ ਦੋਹਾਂ ਲਈ। ❤️ ਦਬਾ ਕੇ ਪਸੰਦ ਸੇਵ ਕਰੋ, ਅਤੇ "ਵੇਰਵਾ" ਵਿੱਚ ਪੂਰੀ ਸੰਭਾਲ ਗਾਈਡ ਦੇਖੋ।'],
+['नाम खोजें / Search','Search by name','ਨਾਮ ਲੱਭੋ'],['जैसे: गुलाब या Rose','e.g. Rose or गुलाब','ਜਿਵੇਂ: ਗੁਲਾਬ ਜਾਂ Rose'],['जगह / Place','Place','ਥਾਂ'],['सभी / All','All','ਸਾਰੇ'],['प्रकार / Type','Type','ਕਿਸਮ'],['सभी','All','ਸਾਰੇ'],['फूल वाले','Flowering','ਫੁੱਲਾਂ ਵਾਲੇ'],['फल','Fruit','ਫਲ'],['औषधीय / जड़ी-बूटी','Medicinal / Herbs','ਦਵਾਈ ਵਾਲੇ / ਜੜ੍ਹੀ-ਬੂਟੀ'],['कम देखभाल','Low care','ਘੱਟ ਸੰਭਾਲ'],['❤️ मेरी पसंद','❤️ My favourites','❤️ ਮੇਰੀ ਪਸੰਦ'],[' पौधे / plants',' plants',' ਪੌਦੇ'],['कोई पौधा नहीं मिला। दूसरा नाम लिखकर देखिए।','No plant found. Try another name.','ਕੋਈ ਪੌਦਾ ਨਹੀਂ ਮਿਲਿਆ। ਕੋਈ ਹੋਰ ਨਾਮ ਲਿਖ ਕੇ ਦੇਖੋ।'],
+['📅 बुवाई कैलेंडर (उत्तर भारत)','📅 Sowing Calendar (North India)','📅 ਬਿਜਾਈ ਕੈਲੰਡਰ (ਉੱਤਰੀ ਭਾਰਤ)'],['महीना चुनिए और जानिए कि अभी क्या बोना या लगाना ठीक है। मौसम इलाके के हिसाब से बदलता है, स्थानीय कृषि केंद्र से भी पूछ लीजिए।','Pick a month and see what is good to sow or plant now. Weather varies by region, so also ask your local agriculture centre.','ਮਹੀਨਾ ਚੁਣੋ ਅਤੇ ਜਾਣੋ ਕਿ ਹੁਣ ਕੀ ਬੀਜਣਾ ਜਾਂ ਲਗਾਉਣਾ ਠੀਕ ਹੈ। ਮੌਸਮ ਇਲਾਕੇ ਮੁਤਾਬਕ ਬਦਲਦਾ ਹੈ, ਸਥਾਨਕ ਖੇਤੀ ਕੇਂਦਰ ਤੋਂ ਵੀ ਪੁੱਛ ਲਓ।'],['सब्ज़ी / बीज:','Vegetables / Seeds:','ਸਬਜ਼ੀ / ਬੀਜ:'],['पौधे / फूल:','Plants / Flowers:','ਪੌਦੇ / ਫੁੱਲ:'],
+['🩺 पौधा डॉक्टर','🩺 Plant Doctor','🩺 ਪੌਦਾ ਡਾਕਟਰ'],['लक्षण चुनिए, कारण और घरेलू उपाय पाइए।','Pick a symptom to get the cause and a home remedy.','ਲੱਛਣ ਚੁਣੋ, ਕਾਰਨ ਅਤੇ ਘਰੇਲੂ ਉਪਾਅ ਪਾਓ।'],['लक्षण / Symptom','Symptom','ਲੱਛਣ'],['कारण','Cause','ਕਾਰਨ'],['उपाय','Remedy','ਉਪਾਅ'],['रासायनिक दवा इस्तेमाल करनी हो तो लेबल की मात्रा ही रखिए, और छिड़काव सुबह या शाम को कीजिए।','If you must use a chemical spray, stick to the label dose and spray in the morning or evening.','ਰਸਾਇਣਕ ਦਵਾਈ ਵਰਤਣੀ ਹੋਵੇ ਤਾਂ ਲੇਬਲ ਦੀ ਮਾਤਰਾ ਹੀ ਰੱਖੋ, ਅਤੇ ਛਿੜਕਾਅ ਸਵੇਰੇ ਜਾਂ ਸ਼ਾਮ ਨੂੰ ਕਰੋ।'],
+['🧮 काम के कैलकुलेटर','🧮 Handy Calculators','🧮 ਕੰਮ ਦੇ ਕੈਲਕੁਲੇਟਰ'],['पानी का शेड्यूल और गमले की मिट्टी का हिसाब।','Watering schedule and potting soil quantity.','ਪਾਣੀ ਦਾ ਸ਼ਡਿਊਲ ਅਤੇ ਗਮਲੇ ਦੀ ਮਿੱਟੀ ਦਾ ਹਿਸਾਬ।'],['💧 पानी शेड्यूल','💧 Watering schedule','💧 ਪਾਣੀ ਸ਼ਡਿਊਲ'],['पौधा चुनिए','Choose plant','ਪੌਦਾ ਚੁਣੋ'],['मौसम','Season','ਮੌਸਮ'],['गर्मी (अप्रैल-जून)','Summer (Apr-Jun)','ਗਰਮੀ (ਅਪ੍ਰੈਲ-ਜੂਨ)'],['बारिश (जुलाई-सितंबर)','Monsoon (Jul-Sep)','ਬਰਸਾਤ (ਜੁਲਾਈ-ਸਤੰਬਰ)'],['सर्दी (नवंबर-फरवरी)','Winter (Nov-Feb)','ਸਰਦੀ (ਨਵੰਬਰ-ਫ਼ਰਵਰੀ)'],['बाकी महीने','Other months','ਬਾਕੀ ਮਹੀਨੇ'],
+['🪣 गमले की मिट्टी मिक्स','🪣 Pot soil mix','🪣 ਗਮਲੇ ਦੀ ਮਿੱਟੀ ਮਿਕਸ'],['गमले का आकार (इंच)','Pot size (inches)','ਗਮਲੇ ਦਾ ਆਕਾਰ (ਇੰਚ)'],['किस्म','Type','ਕਿਸਮ'],['सामान्य (फूल/सजावटी)','General (flowering/ornamental)','ਆਮ (ਫੁੱਲ/ਸਜਾਵਟੀ)'],['कैक्टस / सक्युलेंट','Cactus / Succulent','ਕੈਕਟਸ / ਸਕਿਊਲੈਂਟ'],['सब्ज़ी / फल','Vegetable / Fruit','ਸਬਜ਼ੀ / ਫਲ'],
+['दोमट मिट्टी','Loamy soil','ਦੋਮਟ ਮਿੱਟੀ'],['वर्मीकम्पोस्ट','Vermicompost','ਵਰਮੀਕੰਪੋਸਟ'],['कोकोपीट','Cocopeat','ਕੋਕੋਪੀਟ'],['मोटी रेत','Coarse sand','ਮੋਟੀ ਰੇਤ'],['पर्लाइट / छोटे कंकड़','Perlite / small gravel','ਪਰਲਾਈਟ / ਛੋਟੇ ਕੰਕਰ'],['सड़ी गोबर खाद','Rotted cow-dung manure','ਗਲੀ ਗੋਹੇ ਦੀ ਖਾਦ'],['नीम खली','Neem cake','ਨਿੰਮ ਖਲ'],[' इंच का गमला: लगभग ',' inch pot: about ',' ਇੰਚ ਦਾ ਗਮਲਾ: ਲਗਭਗ '],[' लीटर',' litres',' ਲੀਟਰ'],[' मिक्स',' of mix',' ਮਿਕਸ'],
+['देखभाल के आसान नियम','Easy Care Rules','ਸੰਭਾਲ ਦੇ ਆਸਾਨ ਨਿਯਮ'],['💧 पानी','💧 Water','💧 ਪਾਣੀ'],['उंगली से मिट्टी की ऊपरी परत छूकर देखिए। सूखी हो तभी पानी दीजिए। ज़्यादा पानी से जड़ें सड़ती हैं।','Touch the top layer of soil with your finger. Water only if it is dry. Too much water rots the roots.','ਉਂਗਲ ਨਾਲ ਮਿੱਟੀ ਦੀ ਉੱਪਰਲੀ ਪਰਤ ਛੂਹ ਕੇ ਦੇਖੋ। ਸੁੱਕੀ ਹੋਵੇ ਤਾਂ ਹੀ ਪਾਣੀ ਦਿਓ। ਵੱਧ ਪਾਣੀ ਨਾਲ ਜੜ੍ਹਾਂ ਗਲ ਜਾਂਦੀਆਂ ਹਨ।'],
+['☀️ धूप','☀️ Sunlight','☀️ ਧੁੱਪ'],['अंदर वाले पौधों को सीधी तेज़ धूप नहीं, खिड़की की रोशनी चाहिए। फूल वाले पौधों को ज़्यादातर 5 से 6 घंटे की धूप चाहिए।','Indoor plants need window light, not harsh direct sun. Flowering plants mostly need 5 to 6 hours of sun.','ਅੰਦਰ ਵਾਲੇ ਪੌਦਿਆਂ ਨੂੰ ਸਿੱਧੀ ਤੇਜ਼ ਧੁੱਪ ਨਹੀਂ, ਖਿੜਕੀ ਦੀ ਰੌਸ਼ਨੀ ਚਾਹੀਦੀ ਹੈ। ਫੁੱਲਾਂ ਵਾਲੇ ਪੌਦਿਆਂ ਨੂੰ ਜ਼ਿਆਦਾਤਰ 5 ਤੋਂ 6 ਘੰਟੇ ਦੀ ਧੁੱਪ ਚਾਹੀਦੀ ਹੈ।'],
+['🐛 कीट और रोग','🐛 Pests & Disease','🐛 ਕੀੜੇ ਅਤੇ ਰੋਗ'],['पत्तों के पीछे जांचते रहिए। कीटनाशक का इस्तेमाल सिर्फ़ उसके लेबल पर लिखी मात्रा के अनुसार कीजिए।','Keep checking the back of the leaves. Use pesticide only in the amount written on its label.','ਪੱਤਿਆਂ ਦੇ ਪਿੱਛੇ ਜਾਂਚਦੇ ਰਹੋ। ਕੀਟਨਾਸ਼ਕ ਸਿਰਫ਼ ਉਸ ਦੇ ਲੇਬਲ ਉੱਤੇ ਲਿਖੀ ਮਾਤਰਾ ਮੁਤਾਬਕ ਵਰਤੋ।'],
+['🌾 खाद','🌾 Fertiliser','🌾 ਖਾਦ'],['महीने में एक बार वर्मीकम्पोस्ट या गोबर की सड़ी खाद दीजिए। नीम की खली मिट्टी के कीड़ों से बचाती है।','Give vermicompost or rotted cow-dung manure once a month. Neem cake protects against soil pests.','ਮਹੀਨੇ ਵਿੱਚ ਇੱਕ ਵਾਰ ਵਰਮੀਕੰਪੋਸਟ ਜਾਂ ਗੋਹੇ ਦੀ ਗਲੀ ਖਾਦ ਪਾਓ। ਨਿੰਮ ਦੀ ਖਲ ਮਿੱਟੀ ਦੇ ਕੀੜਿਆਂ ਤੋਂ ਬਚਾਉਂਦੀ ਹੈ।'],
+['दुकान पर आइए','Visit the Shop','ਦੁਕਾਨ ਉੱਤੇ ਆਓ'],['अपनी चुनी सूची WhatsApp पर भेजिए, हम स्टॉक पक्का करके बताएंगे।','Send your chosen list on WhatsApp and we will confirm the stock.','ਆਪਣੀ ਚੁਣੀ ਸੂਚੀ WhatsApp ਉੱਤੇ ਭੇਜੋ, ਅਸੀਂ ਸਟਾਕ ਪੱਕਾ ਕਰਕੇ ਦੱਸਾਂਗੇ।'],['📍 पता:','📍 Address:','📍 ਪਤਾ:'],['[यहां दुकान का पता लिखें]','[Write shop address here]','[ਇੱਥੇ ਦੁਕਾਨ ਦਾ ਪਤਾ ਲਿਖੋ]'],['📞 फ़ोन:','📞 Phone:','📞 ਫ਼ੋਨ:'],['[नंबर]','[number]','[ਨੰਬਰ]'],['🕘 समय:','🕘 Hours:','🕘 ਸਮਾਂ:'],['[सुबह 8 से शाम 7]','[8 AM to 7 PM]','[ਸਵੇਰੇ 8 ਤੋਂ ਸ਼ਾਮ 7]'],['🛒 मेरी सूची देखें','🛒 View my list','🛒 ਮੇਰੀ ਸੂਚੀ ਦੇਖੋ'],
+['AgroNursery: बेहतर उगाइए, बेहतर संभालिए। उदाहरण के पौधे और कीमतें सिर्फ़ डेमो हैं।','AgroNursery: grow better, care better. Sample plants and prices are for demo only.','AgroNursery: ਬਿਹਤਰ ਉਗਾਓ, ਬਿਹਤਰ ਸੰਭਾਲੋ। ਉਦਾਹਰਣ ਦੇ ਪੌਦੇ ਅਤੇ ਕੀਮਤਾਂ ਸਿਰਫ਼ ਡੈਮੋ ਹਨ।'],
+['🛒 सूची (','🛒 List (','🛒 ਸੂਚੀ ('],['✓ जुड़ गया','✓ Added','✓ ਜੁੜ ਗਿਆ'],['🛒 मेरी सूची','🛒 My list','🛒 ਮੇਰੀ ਸੂਚੀ'],['अनुमानित कुल:','Estimated total:','ਅਨੁਮਾਨਿਤ ਕੁੱਲ:'],['(डेमो कीमत)','(demo price)','(ਡੈਮੋ ਕੀਮਤ)'],['WhatsApp पर भेजें','Send on WhatsApp','WhatsApp ਉੱਤੇ ਭੇਜੋ'],['खाली करें','Clear','ਖਾਲੀ ਕਰੋ'],['सूची खाली है। पौधों में "+ सूची में जोड़ें" दबाइए।','Your list is empty. Tap "+ Add to list" on a plant.','ਸੂਚੀ ਖਾਲੀ ਹੈ। ਪੌਦਿਆਂ ਵਿੱਚ "+ ਸੂਚੀ ਵਿੱਚ ਜੋੜੋ" ਦਬਾਓ।'],
+['धूप','Sunlight','ਧੁੱਪ'],['पानी','Water','ਪਾਣੀ'],['मिट्टी','Soil','ਮਿੱਟੀ'],['खाद','Fertiliser','ਖਾਦ'],['कीमत','Price','ਕੀਮਤ'],['दुकान पर पूछें','Ask at the shop','ਦੁਕਾਨ ਤੋਂ ਪੁੱਛੋ'],['गर्मी में ','Summer: ','ਗਰਮੀ ਵਿੱਚ: '],['; सर्दी में ','; Winter: ','; ਸਰਦੀ ਵਿੱਚ: '],
+['रेतीली, बढ़िया जल-निकासी (मिट्टी 1: रेत 1)','Sandy, well-drained (soil 1 : sand 1)','ਰੇਤਲੀ, ਵਧੀਆ ਨਿਕਾਸ (ਮਿੱਟੀ 1 : ਰੇਤ 1)'],['दोमट + वर्मीकम्पोस्ट (मिट्टी 2: खाद 1)','Loam + vermicompost (soil 2 : compost 1)','ਦੋਮਟ + ਵਰਮੀਕੰਪੋਸਟ (ਮਿੱਟੀ 2 : ਖਾਦ 1)'],['फूल के मौसम में महीने में 1 बार (गोबर खाद/बोन मील)','Once a month in flowering season (manure / bone meal)','ਫੁੱਲਾਂ ਦੇ ਮੌਸਮ ਵਿੱਚ ਮਹੀਨੇ ਵਿੱਚ 1 ਵਾਰ (ਗੋਹੇ ਦੀ ਖਾਦ/ਬੋਨ ਮੀਲ)'],['महीने में 1 बार वर्मीकम्पोस्ट','Vermicompost once a month','ਮਹੀਨੇ ਵਿੱਚ 1 ਵਾਰ ਵਰਮੀਕੰਪੋਸਟ'],['खुली छत, बगीचा या बालकनी','Open terrace, garden or balcony','ਖੁੱਲ੍ਹੀ ਛੱਤ, ਬਾਗ਼ ਜਾਂ ਬਾਲਕੋਨੀ'],['कमरा, खिड़की के पास','Room, near a window','ਕਮਰਾ, ਖਿੜਕੀ ਦੇ ਕੋਲ'],
+['नमस्ते AgroNursery, मुझे ये पौधे चाहिए:','Hello AgroNursery, I would like these plants:','ਸਤ ਸ੍ਰੀ ਅਕਾਲ AgroNursery, ਮੈਨੂੰ ਇਹ ਪੌਦੇ ਚਾਹੀਦੇ ਹਨ:'],['कृपया स्टॉक और कीमत बताइए।','Please tell me the stock and price.','ਕਿਰਪਾ ਕਰਕੇ ਸਟਾਕ ਅਤੇ ਕੀਮਤ ਦੱਸੋ।']
+].forEach(([h,e,p])=>TR[h]=[e,p]);
+Z(MO,['January','February','March','April','May','June','July','August','September','October','November','December'],['ਜਨਵਰੀ','ਫ਼ਰਵਰੀ','ਮਾਰਚ','ਅਪ੍ਰੈਲ','ਮਈ','ਜੂਨ','ਜੁਲਾਈ','ਅਗਸਤ','ਸਤੰਬਰ','ਅਕਤੂਬਰ','ਨਵੰਬਰ','ਦਸੰਬਰ']);
+Z(Object.values(LGT),['Low light / shade is fine','Bright indirect light or 3-4 hours of sun','Direct sun, 5-6 hours'],['ਘੱਟ ਰੌਸ਼ਨੀ / ਛਾਂ ਚੱਲੇਗੀ','ਅਸਿੱਧੀ ਤੇਜ਼ ਰੌਸ਼ਨੀ ਜਾਂ 3-4 ਘੰਟੇ ਧੁੱਪ','ਸਿੱਧੀ ਧੁੱਪ, 5-6 ਘੰਟੇ']);
+Z(Object.values(CARE).flat(),['every 10-14 days','once a month (light)','every 5-7 days','once every 15 days','every 2-3 days','once a week'],['ਹਰ 10-14 ਦਿਨ ਬਾਅਦ','ਮਹੀਨੇ ਵਿੱਚ 1 ਵਾਰ (ਹਲਕਾ)','ਹਰ 5-7 ਦਿਨ ਬਾਅਦ','15 ਦਿਨ ਵਿੱਚ 1 ਵਾਰ','ਹਰ 2-3 ਦਿਨ ਬਾਅਦ','ਹਫ਼ਤੇ ਵਿੱਚ 1 ਵਾਰ']);
+Z(CAL.flat(),['Spinach, coriander, peas, radish, carrot','Marigold, sunflower nursery, rose pruning','Okra (late month), bottle gourd, ridge gourd, sunflower','Zinnia, cosmos, fertiliser for roses','Okra, bottle gourd, pumpkin, cucumber, round gourd','Hibiscus, marigold, tulsi','Moong, cowpea, amaranth, pumpkin','Periwinkle, portulaca; increase watering','Cowpea, okra, cluster bean, colocasia','Put up shade net; water morning and evening','Maize, okra, chilli nursery, sponge gourd','Bougainvillea pruning, mogra','Paddy transplanting, maize, cowpea, bitter gourd','Best time to plant mango, guava, lemon and ashoka','Cauliflower nursery, carrot (late month), radish','Balsam, canna, champa; avoid waterlogging','Carrot, turnip, spinach, coriander, mustard','Marigold, chrysanthemum cuttings','Wheat preparation, peas, spinach, fenugreek, radish, mustard','Petunia, dahlia, chrysanthemum; plant new roses','Wheat, peas, gram, mustard, garlic','Protect indoor plants from frost','Spinach, radish, carrot, peas','Water less in winter; hold off fertiliser'],
+['ਪਾਲਕ, ਧਨੀਆ, ਮਟਰ, ਮੂਲੀ, ਗਾਜਰ','ਗੇਂਦਾ, ਸੂਰਜਮੁਖੀ ਦੀ ਨਰਸਰੀ, ਗੁਲਾਬ ਦੀ ਛਾਂਟੀ','ਭਿੰਡੀ (ਅਖ਼ੀਰ ਵਿੱਚ), ਲੌਕੀ, ਤੋਰੀ, ਸੂਰਜਮੁਖੀ','ਜ਼ਿਨੀਆ, ਕੌਸਮੌਸ, ਗੁਲਾਬ ਨੂੰ ਖਾਦ','ਭਿੰਡੀ, ਲੌਕੀ, ਕੱਦੂ, ਖੀਰਾ, ਟਿੰਡਾ','ਗੁੜਹਲ, ਗੇਂਦਾ, ਤੁਲਸੀ','ਮੂੰਗੀ, ਲੋਬੀਆ, ਚੌਲਾਈ, ਕੱਦੂ','ਸਦਾਬਹਾਰ, ਪੋਰਚੁਲਾਕਾ; ਪਾਣੀ ਵਧਾਓ','ਲੋਬੀਆ, ਭਿੰਡੀ, ਗੁਆਰਾ, ਅਰਬੀ','ਛਾਂ-ਜਾਲ ਲਗਾਓ, ਸਵੇਰੇ-ਸ਼ਾਮ ਪਾਣੀ ਦਿਓ','ਮੱਕੀ, ਭਿੰਡੀ, ਮਿਰਚ ਦੀ ਨਰਸਰੀ, ਤੋਰੀ','ਬੋਗਨਵਿਲੀਆ ਦੀ ਛਾਂਟੀ, ਮੋਗਰਾ','ਝੋਨੇ ਦੀ ਲੁਆਈ, ਮੱਕੀ, ਲੋਬੀਆ, ਕਰੇਲਾ','ਅੰਬ, ਅਮਰੂਦ, ਨਿੰਬੂ ਅਤੇ ਅਸ਼ੋਕ ਦੇ ਪੌਦੇ ਲਗਾਉਣ ਦਾ ਸਭ ਤੋਂ ਵਧੀਆ ਸਮਾਂ','ਫੁੱਲਗੋਭੀ ਦੀ ਨਰਸਰੀ, ਗਾਜਰ (ਅਖ਼ੀਰ), ਮੂਲੀ','ਗੁਲਮਹਿੰਦੀ, ਕੈਨਾ, ਚੰਪਾ; ਪਾਣੀ ਖੜ੍ਹਾ ਨਾ ਹੋਣ ਦਿਓ','ਗਾਜਰ, ਸ਼ਲਗਮ, ਪਾਲਕ, ਧਨੀਆ, ਸਰ੍ਹੋਂ','ਗੇਂਦਾ, ਗੁਲਦਾਊਦੀ ਦੀਆਂ ਕਲਮਾਂ','ਕਣਕ ਦੀ ਤਿਆਰੀ, ਮਟਰ, ਪਾਲਕ, ਮੇਥੀ, ਮੂਲੀ, ਸਰ੍ਹੋਂ','ਪੇਟੂਨੀਆ, ਡਾਹਲੀਆ, ਗੁਲਦਾਊਦੀ; ਨਵੇਂ ਗੁਲਾਬ ਲਗਾਓ','ਕਣਕ, ਮਟਰ, ਛੋਲੇ, ਸਰ੍ਹੋਂ, ਲਸਣ','ਅੰਦਰ ਵਾਲੇ ਪੌਦਿਆਂ ਨੂੰ ਪਾਲੇ ਤੋਂ ਬਚਾਓ','ਪਾਲਕ, ਮੂਲੀ, ਗਾਜਰ, ਮਟਰ','ਸਰਦੀ ਵਿੱਚ ਪਾਣੀ ਘੱਟ; ਖਾਦ ਰੋਕੋ']);
+Z(DOC.flat(),['Leaves are turning yellow','Overwatering, poor drainage, or nitrogen deficiency','Water less, check the drainage holes in the pot, and add well-rotted manure or vermicompost.','Leaf edges brown / dry','Low humidity, harsh sun or salt build-up','Mist the leaves, give shade, and flush the pot with plenty of water from the top.','White powder on leaves','Powdery mildew (fungal disease)','Remove affected leaves. Spray buttermilk (1:10) or neem oil, and allow air flow.','Black / brown spots on leaves','Fungal leaf spot','Do not water from above. Burn infected leaves, and use neem oil or a fungicide as per the label.','The plant is wilting','Lack of water or root rot','Touch the soil. If dry, water; if wet and smelly, stop watering and change the soil.','Tiny insects / stickiness under leaves','Aphids, mealybugs, whitefly','Spray soapy water (1 tsp/litre) or neem oil (5 ml/litre) every 5 days.','No flowers are coming','Too little sun or too much nitrogen','Give 5-6 hours of sun, add phosphorus-rich fertiliser (bone meal), and remove dead flowers.','The plant is getting tall and thin','Lack of light','Move the plant to brighter light and prune the top shoot.','White mold / bad smell in the roots','Root rot','Take out the plant, trim rotten roots, and repot in fresh sandy soil.','Leaves are curling','Thrips, mites or heat stress','Check the back of the leaves, spray neem oil, and protect from afternoon sun.'],
+['ਪੱਤੇ ਪੀਲੇ ਪੈ ਰਹੇ ਹਨ','ਵੱਧ ਪਾਣੀ, ਨਿਕਾਸ ਦੀ ਕਮੀ, ਜਾਂ ਨਾਈਟ੍ਰੋਜਨ ਦੀ ਕਮੀ','ਪਾਣੀ ਘੱਟ ਦਿਓ, ਗਮਲੇ ਦੇ ਛੇਕ ਜਾਂਚੋ, ਗਲੀ-ਸੜੀ ਖਾਦ ਜਾਂ ਵਰਮੀਕੰਪੋਸਟ ਪਾਓ।','ਪੱਤਿਆਂ ਦੇ ਕਿਨਾਰੇ ਭੂਰੇ / ਸੁੱਕੇ','ਘੱਟ ਨਮੀ, ਤੇਜ਼ ਧੁੱਪ ਜਾਂ ਲੂਣ ਜੰਮਣਾ','ਪੱਤਿਆਂ ਉੱਤੇ ਪਾਣੀ ਛਿੜਕੋ, ਛਾਂ ਦਿਓ, ਅਤੇ ਗਮਲੇ ਨੂੰ ਉੱਪਰੋਂ ਖੂਬ ਪਾਣੀ ਦੇ ਕੇ ਧੋ ਦਿਓ।','ਪੱਤਿਆਂ ਉੱਤੇ ਚਿੱਟਾ ਪਾਊਡਰ','ਚੂਰਣੀ ਫਫੂੰਦ (Powdery mildew)','ਪ੍ਰਭਾਵਿਤ ਪੱਤੇ ਹਟਾਓ। ਲੱਸੀ (1:10) ਜਾਂ ਨਿੰਮ ਦੇ ਤੇਲ ਦਾ ਛਿੜਕਾਅ ਕਰੋ, ਹਵਾ ਆਉਣ ਦਿਓ।','ਪੱਤਿਆਂ ਉੱਤੇ ਕਾਲੇ / ਭੂਰੇ ਧੱਬੇ','ਫਫੂੰਦ (ਪੱਤਿਆਂ ਦੇ ਧੱਬੇ)','ਉੱਪਰੋਂ ਪਾਣੀ ਨਾ ਪਾਓ। ਸੰਕਰਮਿਤ ਪੱਤੇ ਸਾੜ ਦਿਓ, ਨਿੰਮ ਦਾ ਤੇਲ ਜਾਂ ਲੇਬਲ ਅਨੁਸਾਰ ਫਫੂੰਦਨਾਸ਼ਕ ਵਰਤੋ।','ਪੌਦਾ ਮੁਰਝਾ ਰਿਹਾ ਹੈ','ਪਾਣੀ ਦੀ ਕਮੀ ਜਾਂ ਜੜ੍ਹ ਗਲਣਾ','ਮਿੱਟੀ ਛੂਹ ਕੇ ਦੇਖੋ। ਸੁੱਕੀ ਹੋਵੇ ਤਾਂ ਪਾਣੀ ਦਿਓ; ਗਿੱਲੀ ਤੇ ਬਦਬੂਦਾਰ ਹੋਵੇ ਤਾਂ ਪਾਣੀ ਰੋਕੋ ਅਤੇ ਮਿੱਟੀ ਬਦਲੋ।','ਪੱਤਿਆਂ ਹੇਠਾਂ ਛੋਟੇ ਕੀੜੇ / ਚਿਪਚਿਪਾਹਟ','ਚੇਪਾ, ਮੀਲੀਬੱਗ, ਚਿੱਟੀ ਮੱਖੀ','ਸਾਬਣ-ਪਾਣੀ (1 ਚਮਚ/ਲੀਟਰ) ਜਾਂ ਨਿੰਮ ਤੇਲ (5 ਮਿ.ਲੀ./ਲੀਟਰ) ਦਾ ਛਿੜਕਾਅ ਹਰ 5 ਦਿਨ ਬਾਅਦ ਕਰੋ।','ਫੁੱਲ ਨਹੀਂ ਆ ਰਹੇ','ਘੱਟ ਧੁੱਪ ਜਾਂ ਵੱਧ ਨਾਈਟ੍ਰੋਜਨ','5-6 ਘੰਟੇ ਧੁੱਪ ਦਿਓ, ਫਾਸਫੋਰਸ ਵਾਲੀ ਖਾਦ (ਬੋਨ ਮੀਲ) ਪਾਓ, ਸੁੱਕੇ ਫੁੱਲ ਤੋੜ ਦਿਓ।','ਪੌਦਾ ਲੰਮਾ ਅਤੇ ਪਤਲਾ ਹੋ ਰਿਹਾ ਹੈ','ਰੌਸ਼ਨੀ ਦੀ ਕਮੀ','ਪੌਦੇ ਨੂੰ ਤੇਜ਼ ਰੌਸ਼ਨੀ ਵਿੱਚ ਲੈ ਜਾਓ ਅਤੇ ਉੱਪਰਲੀ ਕਰੂੰਬਲ ਦੀ ਛਾਂਟੀ ਕਰੋ।','ਜੜ੍ਹਾਂ ਵਿੱਚ ਚਿੱਟੀ ਫਫੂੰਦ / ਬਦਬੂ','ਜੜ੍ਹ ਗਲਣਾ','ਪੌਦਾ ਕੱਢੋ, ਗਲੀਆਂ ਜੜ੍ਹਾਂ ਕੱਟੋ, ਨਵੀਂ ਰੇਤਲੀ ਮਿੱਟੀ ਵਿੱਚ ਲਗਾਓ।','ਪੱਤੇ ਮੁੜ ਰਹੇ ਹਨ','ਥ੍ਰਿਪਸ, ਮਾਈਟਸ ਜਾਂ ਗਰਮੀ ਦਾ ਤਣਾਅ','ਪੱਤਿਆਂ ਦੇ ਪਿੱਛੇ ਜਾਂਚੋ, ਨਿੰਮ ਦਾ ਤੇਲ ਛਿੜਕੋ, ਦੁਪਹਿਰ ਦੀ ਧੁੱਪ ਤੋਂ ਬਚਾਓ।']);
+PL.concat(SD).forEach(d=>{if(!TR[d[1]])TR[d[1]]=[d[0],PA[d[0]]||d[0]]});
+const TK=Object.keys(TR).map(k=>[k.normalize('NFC'),TR[k]]).sort((a,b)=>b[0].length-a[0].length),DEV=/[\u0900-\u097F]/;
+function tr(s){if(lang=='hi'||!DEV.test(s))return s;s=s.normalize('NFC');const i=lang=='en'?0:1;for(const[k,v]of TK)if(s.includes(k))s=s.split(k).join(v[i]);return s}
+function loc(root){const ns=[];if(root.nodeType==3)ns.push(root);else{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(w.nextNode())ns.push(w.currentNode);
+ root.querySelectorAll('[placeholder],[aria-label]').forEach(e=>['placeholder','aria-label'].forEach(a=>{if(e.hasAttribute(a)){e['_'+a]=e['_'+a]??e.getAttribute(a);e.setAttribute(a,tr(e['_'+a]))}}))}
+ ns.forEach(n=>{const p=n.parentElement;if(!p||p.closest('script,style,[data-keep]'))return;const o=(n.__t!==undefined&&n.data===n.__t)?n.__o:(n.__o=n.data),r=tr(o);n.__t=r;if(r!==n.data)n.data=r})}
+function setLang(l){lang=l;try{localStorage.setItem('lang',l)}catch(e){}document.documentElement.lang=l;document.title=tr(T0);loc(document.body);dir();res();water();soil()}
+function initLang(){$('#lg').value=lang;document.documentElement.lang=lang;document.title=tr(T0);loc(document.body);
+ new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>loc(n));if(m.type=='characterData')loc(m.target)})).observe(document.body,{childList:true,subtree:true,characterData:true})}
+
+initLang();water();soil();
+</script>
+</body>
+</html>
